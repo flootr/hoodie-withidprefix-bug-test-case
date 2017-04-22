@@ -1,0 +1,35 @@
+<html>
+
+<head>
+  <title>Hoodie Test</title>
+</head>
+
+<body>
+  <script src="hoodie/client.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const credentials = { username: Math.random().toString(36).substr(2, 5), password: 'foo' };
+
+      hoodie.account.signUp(credentials)
+        .then(() => hoodie.account.signIn(credentials))
+        .then(() => hoodie.store.withIdPrefix('list/'))
+        .then(() => hoodie.store.withIdPrefix('list/'))
+        .then(() => hoodie.store.withIdPrefix('list/'))
+        .then(() => hoodie.store.withIdPrefix('list/'))
+        .then(() => hoodie.store.withIdPrefix('list/'))
+        .then(() => hoodie.store.withIdPrefix('list/'))
+        .then(() => hoodie.store.withIdPrefix('list/'))
+        .then(() => hoodie.store.withIdPrefix('list/'))
+        .then(() => hoodie.store.withIdPrefix('list/'))
+        .then(() => hoodie.store.withIdPrefix('list/'))
+        .then(() => hoodie.store.withIdPrefix('list/'))
+        .catch(console.log)
+      // now should log error to the console:
+      // (node) warning: possible EventEmitter memory leak detected. 11 listeners added. Use emitter.setMaxListeners() to increase limit.
+    });
+  </script>
+
+</body>
+
+</html>

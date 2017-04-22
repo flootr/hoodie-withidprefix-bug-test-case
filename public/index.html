@@ -1,0 +1,49 @@
+<html>
+
+<head>
+  <title>Hoodie Test</title>
+</head>
+
+<body>
+  <script src="hoodie/client.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const listStore = hoodie.store.withIdPrefix('list/');
+      const itemStore = hoodie.store.withIdPrefix('item/');
+
+      const findAny = () => Promise.all([listStore.findAll(), itemStore.findAll()]);
+      const credentials = { username: Math.random().toString(36).substr(2, 5), password: 'foo' };
+
+      hoodie.account.on('signin', function () {
+        // this works the 1st time, not the second time (error below)
+        findAny().then(console.log, console.log)
+      })
+
+      hoodie.account.signUp(credentials)
+        .then(() => hoodie.account.signIn(credentials))
+        .then(() => hoodie.account.signOut())
+        .then(() => hoodie.account.signIn(credentials))
+        .then(() => hoodie.account.signOut())
+        .then(() => findAny()) // this also throws the error
+        .catch(console.log)
+
+      /*
+      Error: database is destroyed
+        at PouchDB$3.<anonymous> (client.js:10994)
+        at PouchDB$3.<anonymous> (client.js:2053)
+        at client.js:10948
+        at Promise (<anonymous>)
+        at PouchDB$3.<anonymous> (client.js:10935)
+        at PouchDB$3.allDocs (client.js:2053)
+        at findAll (client.js:23925)
+        at findAny (index.html:15)
+        at hoodie.account.signUp.then.then.then.then.then (index.html:28)
+        at <anonymous>
+        */
+    });
+  </script>
+
+</body>
+
+</html>
